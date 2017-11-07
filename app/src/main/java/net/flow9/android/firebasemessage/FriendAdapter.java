@@ -1,5 +1,6 @@
 package net.flow9.android.firebasemessage;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,17 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.Holder>{
         TextView textEmail;
         public Holder(View itemView) {
             super(itemView);
-            textName = itemView.findViewById(R.id.textName);
+            textName = itemView.findViewById(R.id.textMsg);
             textEmail = itemView.findViewById(R.id.textEmail);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                    intent.putExtra("friend_id", friend.id);
+                    intent.putExtra("chat_id",friend.chat_id);
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

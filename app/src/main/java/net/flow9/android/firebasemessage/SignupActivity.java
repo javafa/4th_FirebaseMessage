@@ -91,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                     });
                     // 3. 사용자 등록
                     String tempKey = email.replace(".","_");
-                    User user = new User(fUser.getUid(), name, email, "", birthday, gender, phone);
+                    User user = new User(tempKey , name, email, "", birthday, gender, phone);
                     userRef.child(tempKey).setValue(user);
 
                     //String tempKey = email.replace(".","_");

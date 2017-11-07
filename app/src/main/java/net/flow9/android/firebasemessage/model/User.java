@@ -12,6 +12,7 @@ public class User {
     public String birthday;
     public String gender;
     public String phone_number;
+    public String chat_id;
 
     public User(){
         // default for firebase

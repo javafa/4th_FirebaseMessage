@@ -1,5 +1,6 @@
 package net.flow9.android.firebasemessage;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,9 +75,19 @@ public class MainActivity extends AppCompatActivity {
                     // node 가 있으면
                     if(dataSnapshot.getChildrenCount() > 0){
                         String key = dataSnapshot.getKey();
-                        User user = dataSnapshot.getValue(User.class);
+
+                        User friend = dataSnapshot.getValue(User.class);
+                        // 내 노드밑에 친구추가하기
                         friendRef.child(PreferenceUtil.getUserId(getBaseContext()))
-                                .child(key).setValue(user);
+                                .child(key)
+                                .setValue(friend);
+                        // 친구 노드밑에 나 추가하기
+                        User my = new User();
+                        my.id = PreferenceUtil.getUserId(getBaseContext());
+                        my.name = PreferenceUtil.getString(getBaseContext(),"name");;
+                        friendRef.child(friend.id)
+                                .child(PreferenceUtil.getUserId(getBaseContext()))
+                                .setValue(my);
                     }else{
 
                     }
@@ -102,11 +113,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
+            // 친구추가
             case R.id.menu_add_friend:
                 addLayout.setVisibility(View.VISIBLE);
                 break;
-            case R.id.menu_test:
-                Toast.makeText(this,"menu clicked!", Toast.LENGTH_SHORT).show();
+            // 로그아웃
+            case R.id.menu_signout:
+                PreferenceUtil.setValue(this, "auto_sign","");
+                Intent intent = new Intent(this, SigninActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         return true;
